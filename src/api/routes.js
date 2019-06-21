@@ -18,5 +18,8 @@ export default {
   getRSA: (json, appId, env, cluster, namespace) => axios.get(serviceUrl + '/config-middleware/acmedcare-config/configs/' + appId + '/' + env + '/' + cluster + '/' + namespace, { params: json }),
 
   // 查询项目应用模块配置
-  getPlatProModuleConfig: (areaNo, orgId, projectId, appId) => axios.get(serviceUrl + '/aorp/platform-project/v1/' + areaNo + '/' + orgId + '/' + projectId + '/' + appId + '/module/config')
+  getPlatProModuleConfig: (areaNo, orgId, projectId, appId) => axios.get(serviceUrl + '/aorp/platform-project/v1/' + areaNo + '/' + orgId + '/' + projectId + '/' + appId + '/module/config'),
+
+  // 获取某个通行证的所有角色权限
+  getPlatRapPassportPermission: json => axios.get(serviceUrl + '/aorp/platform-rap/v1/passport-permission', { params: json })
 }

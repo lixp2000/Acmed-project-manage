@@ -149,15 +149,10 @@ export default {
             this.$store.commit('setSelectLoginPlatform', appLists[0])
             setStore('selectLoginPlatform', appLists[0])
 
-            // let configRoute = await this.getPlatProModuleConfig()
-            // if (typeof configRoute == 'boolean' && !configRoute) return
-
             let routeConfig = []
-            // if (configRoute && configRoute.config != '""') {
-            //   routeConfig = new Function('return ' + JSON.parse(configRoute.config))()
-            // } else {
+
             routeConfig = initRouters
-            // }
+
             setStore('routeConfig', routeConfig)
 
             // 此处从接口拉取用户对应的权限，实际使用时需清除注销，并且删除  permissionConfigArr = permissionConfig
@@ -249,12 +244,6 @@ export default {
       if (typeof res == 'boolean' && !res) return false
       return res
     },
-    // // 拉取路由
-    // async getPlatProModuleConfig() {
-    //   const res = await this.$api.getPlatProModuleConfig(this.appInfo.areaNo, this.appInfo.orgId, this.appInfo.projectId, this.appInfo.appId)
-    //   if (typeof res == 'boolean' && !res) return false
-    //   return res
-    // },
     // 拉取权限
     async getPlatRapAppPermission() {
       const res = await this.$api.getPlatRapAppPermission(
