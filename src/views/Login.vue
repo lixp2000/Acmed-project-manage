@@ -152,7 +152,7 @@ export default {
             // let configRoute = await this.getPlatProModuleConfig()
             // if (typeof configRoute == 'boolean' && !configRoute) return
 
-            // let routeConfig = []
+            let routeConfig = []
             // if (configRoute && configRoute.config != '""') {
             //   routeConfig = new Function('return ' + JSON.parse(configRoute.config))()
             // } else {

@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       btnloading: false,
+      publicKey: '',
       formInline: {
         oldPasswords: '',
         newPasswords: '',
@@ -86,11 +87,44 @@ export default {
     handleSubmit() {
       this.$refs.formInline.validate(valid => {
         if (valid) {
+          if (this.formInline.newPasswords && this.formInline.newPasswords.length < 6) {
+            this.$Message.warning('新密码不能小于6位')
+            return
+          }
+          let jse = new JsEncrypt()
+
+          jse.setPublicKey(this.publicKey)
+
+          this.submitFormInline.oldPassword = jse.encrypt(this.formInline.oldPasswords)
+          this.submitFormInline.newPassword = jse.encrypt(this.formInline.newPasswords)
+
+          this.changePwd()
         } else {
           this.$Message.error('Fail!')
         }
       })
+    },
+    async changePwd() {
+      this.btnloading = true
+      const res = await this.$api.postAuthUpdatePassword({
+        accessToken: this.$store.state.user.token,
+        oldPassword: this.submitFormInline.oldPassword,
+        newPassword: this.submitFormInline.newPassword
+      })
+      this.btnloading = false
+      if (typeof res == 'boolean' && !res) return
+      this.$Message.success('密码修改成功!')
+      this.$router.push('/login')
+    },
+    // 获取RSA公钥
+    async getRSA() {
+      const res = await this.$api.getRSA({}, '200000', 'dev', 'default', 'application')
+      if (typeof res == 'boolean' && !res) return
+      this.publicKey = res.configurations['acmedcare.frontend.password.encrpty.rsa-public-key']
     }
+  },
+  created() {
+    this.getRSA()
   }
 }
 </script>

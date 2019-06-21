@@ -30,7 +30,7 @@
 import cardImg from '@/assets/img/loginplatformImg-card.png'
 import util from '@/assets/js/initRouter.js'
 import initRouters from '@/router/initRouters.js'
-import { setStore, removeStore } from '@/assets/js/utils'
+import { setStore } from '@/assets/js/utils'
 import { directive as clickOutside } from 'v-click-outside-x'
 
 // 拉取权限--demo文件，实际使用时需删除

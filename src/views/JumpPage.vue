@@ -10,9 +10,7 @@ export default {
       let tt = await util.initRouter(this, getStore('routeConfig'))
       if (tt) {
         if (fullPath) {
-          
           let isclock = true
-          let matchPath = ''
           let pathArr = path.split('/')
           pathArr.shift()
           pathArr[0] = '/' + pathArr[0]
