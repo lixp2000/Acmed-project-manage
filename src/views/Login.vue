@@ -95,52 +95,25 @@ export default {
             removeStore('remAccountPassword')
           }
           setStore('accountPasswordIschecked', this.checked)
+          this.$store.commit('SET_TOKEN', accessToken.access_token)
 
-          let loginInfomation = await this.getMidRapLogin(accessToken.access_token) // 根据token获取用户详情，角色，权限，可用区域信息
+          let loginInfomation = await this.getPlatpassportInfo()
           if (typeof loginInfomation == 'boolean' && !loginInfomation) {
             this.$store.commit('LOGIN_OUT')
             return
           }
 
-          this.$store.commit('SET_TOKEN', accessToken.access_token)
-
-          this.$store.commit('SET_USER', loginInfomation.principal)
-
-          let areaService = loginInfomation.areaService
-
           let appLists = []
-
           let permissionConfigArr = []
 
-          if (areaService && areaService.areas && areaService.areas.length > 0) {
-            areaService.areas.map(areas => {
-              if (areas.orgs && areas.orgs.length > 0) {
-                areas.orgs.map(orgs => {
-                  if (orgs.projects && orgs.projects.length > 0) {
-                    orgs.projects.map(projects => {
-                      if (projects.apps && projects.apps.length > 0) {
-                        projects.apps.map(apps => {
-                          appLists.push({
-                            areaNo: areas.areaNo,
-                            areaName: areas.areaName,
-                            orgId: orgs.orgId,
-                            orgName: orgs.orgName,
-                            projectId: projects.projectId,
-                            projectName: projects.projectName,
-                            projectType: projects.projectType,
-                            appId: apps.appId,
-                            appName: apps.appName,
-                            appType: apps.appType
-                          })
-                        })
-                      }
-                    })
-                  }
-                })
-              }
-            })
-          }
-          this.$store.commit('setLoginPlatform', appLists)
+          this.$store.commit('SET_USER', {
+            passportUid: loginInfomation.passportId,
+            passportAccount: loginInfomation.passportAccount
+          })
+
+          appLists = loginInfomation.apps
+
+          this.$store.commit('setLoginPlatform', loginInfomation.apps)
 
           if (appLists.length > 1) {
             this.$router.push({ name: 'loginPlatform' })
@@ -155,14 +128,9 @@ export default {
 
             setStore('routeConfig', routeConfig)
 
-            // 此处从接口拉取用户对应的权限，实际使用时需清除注销，并且删除  permissionConfigArr = permissionConfig
-            // let permissionConfig = await this.getPlatRapPassportPermission()
+            // 此处从接口拉取用户对应的权限，实际使用时需清除注销
+            // let permissionConfig = await this.getPlatappApplication()
             // if (typeof permissionConfig == 'boolean' && !permissionConfig) return
-            // for (let key in permissionConfig) {
-            //   permissionConfigArr = [...permissionConfig[key]]
-            // }
-
-            // 此行只在demo时使用
             permissionConfigArr = permissionConfig
 
             // 将权限存放在本地
@@ -174,11 +142,11 @@ export default {
               let twoClocked = true
               for (let item of this.$store.state.app.routers) {
                 for (let _item of permissionConfigArr) {
-                  if (item.meta.permission == _item.permissionName) {
+                  if (item.meta.permission == _item.permName) {
                     for (let key of item.children) {
                       if (twoClocked) {
                         for (let _key of permissionConfigArr) {
-                          if (key.meta.permission == _key.permissionName) {
+                          if (key.meta.permission == _key.permName) {
                             this.$router.push({ name: key.name })
                             clocked = false
                             twoClocked = false
@@ -236,37 +204,7 @@ export default {
         return false
       }
     },
-    // 根据登录凭证获取用户详情，角色，权限，可用区域信息
-    async getMidRapLogin(token) {
-      const res = await this.$api.getMidRapLogin({
-        token: token
-      })
-      if (typeof res == 'boolean' && !res) return false
-      return res
-    },
-    // 拉取权限
-    async getPlatRapAppPermission() {
-      const res = await this.$api.getPlatRapAppPermission(
-        {
-          bizType: this.$menuUtil.bizType.NORMAL,
-          areaNo: this.appInfo.areaNo,
-          orgId: this.appInfo.orgId
-        },
-        this.appInfo.projectId,
-        this.appInfo.appId
-      )
-      if (typeof res == 'boolean' && !res) return false
-      return res
-    },
-    async getPlatRapPassportPermission() {
-      const res = await this.$api.getPlatRapPassportPermission({
-        passportId: this.$store.state.user.passportUid,
-        projectId: this.appInfo.projectId,
-        appId: this.appInfo.appId
-      })
-      if (typeof res == 'boolean' && !res) return false
-      return res
-    }
+    
   },
   created() {
     this.eyeShow = false

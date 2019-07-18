@@ -12,18 +12,18 @@
       .box-card-div(v-for="item, index in $store.state.app.loginPlatformData", :key="index", @click="currentCard(item)")
         img.box-card-background(:src="card")
         div
-          span {{item.areaName}}--{{item.orgName}}
-          span {{item.projectName}}：{{item.appName}}
+          span {{item.orgName}}
+          span {{item.appName}}
         img.box-card-div-btn(src="../assets/img/loginplatformImg-card-btn.png")
 
 
     .row(v-if="$store.state.app.isMobile")
       .card-phone(v-for="item, index in $store.state.app.loginPlatformData", :key="index", @click="currentCard(item)")
         .mB-10.card-phone-top
-          span {{item.areaName}} -- {{item.orgName}}
+          span {{item.orgName}}
 
         div
-          span ( {{item.projectName}} : {{item.appName}} )
+          span ( {{item.appName}} )
 
 </template>
 <script>
@@ -71,17 +71,12 @@ export default {
 
       setStore('routeConfig', routeConfig)
 
-      // 此处从接口拉取用户对应的权限，实际使用时需清除注销，并且删除  permissionConfigArr = permissionConfig
-      // let permissionConfig = await this.getPlatRapPassportPermission()
+      // 此处从接口拉取用户对应的权限，实际使用时需清除注销
+      // let permissionConfig = await this.getPlatappApplication()
       // if (typeof permissionConfig == 'boolean' && !permissionConfig) {
       //   this.$Spin.hide()
       //   return
       // }
-      // for (let key in permissionConfig) {
-      //   permissionConfigArr = [...permissionConfig[key]]
-      // }
-
-      // 此行只在demo时使用
       permissionConfigArr = permissionConfig
 
       // 将权限存放在本地
@@ -93,11 +88,11 @@ export default {
         let twoClocked = true
         for (let item of this.$store.state.app.routers) {
           for (let _item of permissionConfigArr) {
-            if (item.meta.permission == _item.permissionName) {
+            if (item.meta.permission == _item.permName) {
               for (let key of item.children) {
                 if (twoClocked) {
                   for (let _key of permissionConfigArr) {
-                    if (key.meta.permission == _key.permissionName) {
+                    if (key.meta.permission == _key.permName) {
                       this.$Spin.hide()
                       this.$router.push({ name: key.name })
                       clocked = false
@@ -119,12 +114,28 @@ export default {
         }
       }
     },
-    // 拉取权限
-    async getPlatRapPassportPermission() {
-      const res = await this.$api.getPlatRapPassportPermission({
+    // 根据用户通行证以及应用Id获取相关权限信息
+    async getPlatappApplication() {
+      const res = await this.$api.getPlatappApplication({
         passportId: this.$store.state.user.passportUid,
-        projectId: this.projectId,
         appId: this.appId
+      })
+      if (typeof res == 'boolean' && !res) return false
+      return res
+    },
+    // 获取通行证所在机构，应用
+    async getPlatpassportInfo() {
+      const res = await this.$api.getPlatpassportInfo({
+        access_token: this.$store.state.user.token
+      })
+      if (typeof res == 'boolean' && !res) return false
+      return res
+    },
+    // 根据用户通行证以及应用Id获取相关权限信息
+    async getPlatappApplication() {
+      const res = await this.$api.getPlatappApplication({
+        passportId: this.$store.state.user.passportUid,
+        appId: this.appInfo.appId
       })
       if (typeof res == 'boolean' && !res) return false
       return res

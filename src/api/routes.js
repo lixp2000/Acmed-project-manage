@@ -11,15 +11,12 @@ export default {
   // 重置密码
   postAuthResetPassword: json => axios.post(serviceUrl + '/aorp/auth/v1/reset-password', qs.stringify(json), authConfig),
 
-  // 根据登录凭证获取用户详情，角色，权限，可用区域信息
-  getMidRapLogin: json => axios.get(serviceUrl + '/aorp-middleware/middleware-rap/login', { params: json }),
-
   // 获取RSA公钥
   getRSA: (json, appId, env, cluster, namespace) => axios.get(serviceUrl + '/config-middleware/acmedcare-config/configs/' + appId + '/' + env + '/' + cluster + '/' + namespace, { params: json }),
 
-  // 查询项目应用模块配置
-  getPlatProModuleConfig: (areaNo, orgId, projectId, appId) => axios.get(serviceUrl + '/aorp/platform-project/v1/' + areaNo + '/' + orgId + '/' + projectId + '/' + appId + '/module/config'),
+  // 获取通行证所在机构，应用
+  getPlatpassportInfo: json => axios.get(serviceUrl + '/aorp/platform-passport/v2/info', { params: json }),
 
-  // 获取某个通行证的所有角色权限
-  getPlatRapPassportPermission: json => axios.get(serviceUrl + '/aorp/platform-rap/v1/passport-permission', { params: json })
+  // 根据用户通行证以及应用Id获取相关权限信息
+  getPlatappApplication: json => axios.get(serviceUrl + '/aorp/platform-app/v2/' + json.passportId + '/applications/' + json.appId)
 }
