@@ -59,7 +59,7 @@ const showThisMenuEle = (route, access) => {
   if (route.meta && route.meta.permission && access) {
     let _false = false
     access.map(item => {
-      if (route.meta.permission == item.permissionName) {
+      if (route.meta.permission == item.permName) {
         _false = true
       }
     })
