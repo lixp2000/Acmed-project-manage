@@ -3,6 +3,7 @@ import store from '@/store'
 import router from '@/router'
 import { Message } from 'iview'
 
+/* eslint-disable */
 let serviceUrl = BASE_URL
 let uploadUrl = UPLOAD_URL
 
