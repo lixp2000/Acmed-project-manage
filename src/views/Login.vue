@@ -99,6 +99,7 @@ export default {
 
           let loginInfomation = await this.getPlatpassportInfo()
           if (typeof loginInfomation == 'boolean' && !loginInfomation) {
+            this.isCoverShow = false
             this.$store.commit('LOGIN_OUT')
             return
           }
@@ -130,6 +131,7 @@ export default {
 
             // 此处从接口拉取用户对应的权限，实际使用时需清除注销
             // let permissionConfig = await this.getPlatappApplication()
+            // this.isCoverShow = false
             // if (typeof permissionConfig == 'boolean' && !permissionConfig) return
             permissionConfigArr = permissionConfig
 
@@ -204,7 +206,23 @@ export default {
         return false
       }
     },
-    
+    // 获取通行证所在机构，应用
+    async getPlatpassportInfo() {
+      const res = await this.$api.getPlatpassportInfo({
+        access_token: this.$store.state.user.token
+      })
+      if (typeof res == 'boolean' && !res) return false
+      return res
+    },
+    // 根据用户通行证以及应用Id获取相关权限信息
+    async getPlatappApplication() {
+      const res = await this.$api.getPlatappApplication({
+        passportId: this.$store.state.user.passportUid,
+        appId: this.appInfo.appId
+      })
+      if (typeof res == 'boolean' && !res) return false
+      return res
+    }
   },
   created() {
     this.eyeShow = false

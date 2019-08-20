@@ -3,8 +3,8 @@ import store from '@/store'
 import router from '@/router'
 import { Message } from 'iview'
 
-const serviceUrl = process.env.VUE_APP_BASE_URL
-const uploadUrl = process.env.VUE_APP_UPLOAD_URL
+let serviceUrl = BASE_URL
+let uploadUrl = UPLOAD_URL
 
 let config = {
   headers: {
