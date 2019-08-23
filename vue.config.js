@@ -3,5 +3,5 @@ module.exports = {
     port: 8000
   },
 
-  publicPath: process.env.NODE_ENV === 'production' ? '/' : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? './' : '/'
 }
