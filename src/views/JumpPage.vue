@@ -21,7 +21,7 @@ export default {
                   let _pathArr = _item.path.split('/')
                   if (_pathArr[0] == pathArr[1]) {
                     for (let per of getStore('permissionConfig')) {
-                      if (_item.meta.permission == per.permissionName) {
+                      if (_item.meta.permission == per.permName) {
                         isclock = false
                         this.$router.push({ path: fullPath })
                       }
@@ -30,7 +30,7 @@ export default {
                 } else {
                   if (_item.path == pathArr[1]) {
                     for (let per of getStore('permissionConfig')) {
-                      if (_item.meta.permission == per.permissionName) {
+                      if (_item.meta.permission == per.permName) {
                         isclock = false
                         this.$router.push({ path: fullPath })
                       }
@@ -44,7 +44,7 @@ export default {
             this.$Message.warning('您的权限不足,请联系管理员！')
             for (let item of this.$store.state.app.routers) {
               for (let _item of getStore('permissionConfig')) {
-                if (item.meta.permission == _item.permissionName) {
+                if (item.meta.permission == _item.permName) {
                   // console.log(item)
                   if (!item.children[0].meta.isSubmenu) {
                     this.$router.push({ name: item.children[0].name })
@@ -57,22 +57,8 @@ export default {
             }
           }
         } else {
-          if (this.$store.state.app.routers.length > 0) {
-            for (let item of this.$store.state.app.routers) {
-              for (let _item of getStore('permissionConfig')) {
-                if (item.meta.permission == _item.permissionName) {
-                  if (!item.children[0].meta.isSubmenu) {
-                    this.$router.push({ name: item.children[0].name })
-                  } else {
-                    this.$router.push({ name: item.children[0].children[0].name })
-                  }
-                  break
-                }
-              }
-            }
-          } else {
-            this.$router.push('/login')
-          }
+          this.$store.commit('LOGIN_OUT')
+          this.$router.push('/login')
         }
       }
     }
