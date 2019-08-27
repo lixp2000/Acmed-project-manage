@@ -44,7 +44,7 @@
           collapsible,
           :collapsed-width="isMobile ? 0 : 78",
           @on-collapse='collapsedSider',
-          v-model="collapsed",
+          v-model="SiderCollapsed",
           :class='{"isMobile": isMobile}'
         )
           Menu.menu-item(accordion, :theme="theme", width="auto", :active-name='menuActiveName', :open-names="openNames", @on-select='changeMenu', @on-open-change='openchange', :class="{'collapsed-menu': collapsed}")
