@@ -1,6 +1,6 @@
 import store from '@/store'
 import { orientationStatus, isIE, getStore, _debounce } from '@/assets/js/utils'
-import { Message } from 'iview'
+import { Message } from 'view-design'
 
 // 设置用户信息
 store.commit('SET_USER', getStore('user'))

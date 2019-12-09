@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from '@/store'
-import { LoadingBar } from 'iview'
+import { LoadingBar } from 'view-design'
 
 import { routeAll } from './routes'
 

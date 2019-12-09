@@ -4,5 +4,6 @@
  * UPLOAD_URL：文件上传地址
  */
 
+/* eslint-disable */
 const BASE_URL = 'http://192.168.1.159:7777'
 const UPLOAD_URL = 'http://192.168.1.159:18848'

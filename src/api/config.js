@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
-import { Message } from 'iview'
+import { Message } from 'view-design'
 
 /* eslint-disable */
 let serviceUrl = BASE_URL
