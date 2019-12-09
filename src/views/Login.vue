@@ -9,8 +9,7 @@
           Input(prefix="ios-person-outline", v-model="formInline.passport", placeholder="用户名", @on-enter='handleSubmit("formInline")')
         
         FormItem(prop="Nopaddword")
-          Input(prefix="ios-lock-outline", :type="eyeShow ? 'text' : 'password'", v-model="formInline.Nopaddword", placeholder="密码", @on-enter='handleSubmit("formInline")')
-            Icon(:type="eyeShow ? 'ios-eye-off' : 'ios-eye'", slot="suffix", @click.native="eyeShow = !eyeShow")
+          Input(prefix="ios-lock-outline", type="password", password, v-model="formInline.Nopaddword", placeholder="密码", @on-enter='handleSubmit("formInline")')
         
         Row
           Col.row
@@ -41,7 +40,6 @@ export default {
   data() {
     return {
       checked: true,
-      eyeShow: false,
       formInline: {
         passport: '',
         password: '',
@@ -225,7 +223,6 @@ export default {
     }
   },
   created() {
-    this.eyeShow = false
     if (getStore('remAccountPassword')) {
       let res = getStore('remAccountPassword')
       this.formInline.passport = res.passport
