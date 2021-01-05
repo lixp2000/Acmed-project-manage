@@ -8,7 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "core-js": "^3.4.3",
     "jsencrypt": "^3.0.0-rc.1",
     "v-click-outside-x": "^4.0.19",
